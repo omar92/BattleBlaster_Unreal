@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "Components/CapsuleComponent.h"
 #include "BasePawn.generated.h"
+
 
 UCLASS()
 class BATTLEBLASTER_API ABasePawn : public APawn
@@ -26,4 +28,14 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	UPROPERTY(VisibleAnywhere)
+	class UCapsuleComponent* CapsuleComp;
+	
+	UPROPERTY(VisibleAnywhere)
+	class UStaticMeshComponent* BaseMesh;
+	
+	UPROPERTY(VisibleAnywhere)
+	class UStaticMeshComponent* TurretMesh;
+	
 };
