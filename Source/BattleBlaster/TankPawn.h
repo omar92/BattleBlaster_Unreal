@@ -3,39 +3,38 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
-#include "Components/CapsuleComponent.h"
-#include "BasePawn.generated.h"
+#include "BasePawn.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "TankPawn.generated.h"
 
-
+/**
+ * 
+ */
 UCLASS()
-class BATTLEBLASTER_API ABasePawn : public APawn
+class BATTLEBLASTER_API ATankPawn : public ABasePawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	ABasePawn();
+	ATankPawn();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-protected:
+private:
 	UPROPERTY(VisibleAnywhere)
-	class UCapsuleComponent* CapsuleComp;
-	
+	USpringArmComponent* SpringArmComp;
+
 	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* BaseMesh;
-	
-	UPROPERTY(VisibleAnywhere)
-	class UStaticMeshComponent* TurretMesh;
-	
+	UCameraComponent* CameraComp;
 };
