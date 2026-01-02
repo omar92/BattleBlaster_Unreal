@@ -26,7 +26,7 @@ void ATankPawn::SetupInputSystem() const
 		{
 			if (const auto EnhancedInputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer))
 			{
-				EnhancedInputSubsystem->AddMappingContext(DefaultMappingContext,0);
+				EnhancedInputSubsystem->AddMappingContext(DefaultMappingContext, 0);
 				return;
 			}
 			//log warning
@@ -46,11 +46,29 @@ void ATankPawn::BeginPlay()
 	Super::BeginPlay();
 
 	SetupInputSystem();
+
+	PlayerControllerRef = Cast<APlayerController>(Controller);
 }
 
 void ATankPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FHitResult HitResult;
+	if (PlayerControllerRef->GetHitResultUnderCursor(ECC_Visibility, false, OUT HitResult))
+	{
+		FVector HitLocation = HitResult.ImpactPoint;
+		//draw sphere at hit location
+		DrawDebugSphere(GetWorld(), HitLocation, 25.f, 12, FColor::Red, false, -1.f);
+
+
+		// FVector ToTarget = HitLocation - TurretMesh->GetComponentLocation();
+		// FRotator TargetRotation = ToTarget.Rotation();
+		// FRotator TurretRotation = TurretMesh->GetComponentRotation();
+		// TargetRotation.Pitch = TurretRotation.Pitch;
+		// TargetRotation.Roll = TurretRotation.Roll;
+		// TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretRotation, TargetRotation, DeltaTime, 5.f));
+	}
 }
 
 void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
@@ -76,6 +94,5 @@ void ATankPawn::RotateInput(const FInputActionValue& Value)
 	const auto InputValue = Value.Get<float>();
 	FRotator DeltaRotation = FRotator::ZeroRotator;
 	DeltaRotation.Yaw = InputValue * TurnRate * GetWorld()->GetDeltaSeconds();
-	AddActorLocalRotation(FQuat(DeltaRotation), true);	
+	AddActorLocalRotation(FQuat(DeltaRotation), true);
 }
-

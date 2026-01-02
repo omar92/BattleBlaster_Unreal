@@ -42,10 +42,12 @@ private:
 	class UInputAction* RotateAction;
 	
 
-	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
+	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
-	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComp;
+	UPROPERTY(VisibleAnywhere)
+	APlayerController* PlayerControllerRef;
 	
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 300.f;
