@@ -64,6 +64,8 @@ void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComp
 
 void ATankPawn::MoveInput(const FInputActionValue& Value)
 {
-	//log info
-	UE_LOG(LogTemp, Warning, TEXT("MoveInput called Value: %f"), Value.Get<float>());
+	const auto InputValue = Value.Get<float>();
+	auto DeltaLocation = FVector::ZeroVector;
+	DeltaLocation.X = InputValue * MoveSpeed * GetWorld()->GetDeltaSeconds();
+	AddActorLocalOffset(DeltaLocation, true);
 }

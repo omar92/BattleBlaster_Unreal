@@ -44,5 +44,8 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	UCameraComponent* CameraComp;
 	
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed = 300.f;
+	
 	void MoveInput(const struct FInputActionValue& Value);
 };
