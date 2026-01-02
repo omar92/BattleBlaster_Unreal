@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#pragma once 
+#pragma once
 
 #include "CoreMinimal.h"
 #include "BasePawn.h"
@@ -19,6 +19,7 @@ class BATTLEBLASTER_API ATankPawn : public ABasePawn
 public:
 	// Sets default values for this pawn's properties
 	ATankPawn();
+	void SetupInputSystem() const;
 
 protected:
 	// Called when the game starts or when spawned
@@ -32,9 +33,11 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 private:
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComp;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputMappingContext* DefaultMappingContext;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
+	USpringArmComponent* SpringArmComp;
+	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	UCameraComponent* CameraComp;
 };
