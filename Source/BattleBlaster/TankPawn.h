@@ -44,5 +44,5 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	UCameraComponent* CameraComp;
 	
-	void MoveInput();
+	void MoveInput(const struct FInputActionValue& Value);
 };

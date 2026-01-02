@@ -62,9 +62,8 @@ void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComp
 	}
 }
 
-void ATankPawn::MoveInput()
+void ATankPawn::MoveInput(const FInputActionValue& Value)
 {
-	auto time = GetWorld()->GetTimeSeconds();
 	//log info
-	UE_LOG(LogTemp, Warning, TEXT("MoveInput called at time: %f"), time);
+	UE_LOG(LogTemp, Warning, TEXT("MoveInput called Value: %f"), Value.Get<float>());
 }
