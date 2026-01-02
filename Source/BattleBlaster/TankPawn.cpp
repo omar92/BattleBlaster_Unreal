@@ -3,6 +3,7 @@
 
 #include "TankPawn.h"
 #include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 
 ATankPawn::ATankPawn()
@@ -55,4 +56,15 @@ void ATankPawn::Tick(float DeltaTime)
 void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	if (auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATankPawn::MoveInput);
+	}
+}
+
+void ATankPawn::MoveInput()
+{
+	auto time = GetWorld()->GetTimeSeconds();
+	//log info
+	UE_LOG(LogTemp, Warning, TEXT("MoveInput called at time: %f"), time);
 }

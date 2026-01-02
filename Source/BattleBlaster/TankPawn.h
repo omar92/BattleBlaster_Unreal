@@ -31,13 +31,18 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputMappingContext* DefaultMappingContext;
+
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* MoveAction;
 
 	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	UCameraComponent* CameraComp;
+	
+	void MoveInput();
 };
