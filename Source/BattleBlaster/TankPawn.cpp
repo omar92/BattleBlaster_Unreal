@@ -59,6 +59,7 @@ void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComp
 	if (auto EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATankPawn::MoveInput);
+		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered, this, &ATankPawn::RotateInput);
 	}
 }
 
@@ -69,3 +70,12 @@ void ATankPawn::MoveInput(const FInputActionValue& Value)
 	DeltaLocation.X = InputValue * MoveSpeed * GetWorld()->GetDeltaSeconds();
 	AddActorLocalOffset(DeltaLocation, true);
 }
+
+void ATankPawn::RotateInput(const FInputActionValue& Value)
+{
+	const auto InputValue = Value.Get<float>();
+	FRotator DeltaRotation = FRotator::ZeroRotator;
+	DeltaRotation.Yaw = InputValue * TurnRate * GetWorld()->GetDeltaSeconds();
+	AddActorLocalRotation(FQuat(DeltaRotation), true);	
+}
+

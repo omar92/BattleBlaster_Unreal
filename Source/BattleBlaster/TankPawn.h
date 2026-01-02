@@ -38,6 +38,9 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* MoveAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* RotateAction;
+	
 
 	UPROPERTY(VisibleAnywhere, Category = "Camera/components")
 	USpringArmComponent* SpringArmComp;
@@ -46,6 +49,9 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 300.f;
+	UPROPERTY(EditAnywhere)
+	float TurnRate = 100.f;
 	
 	void MoveInput(const struct FInputActionValue& Value);
+	void RotateInput(const struct FInputActionValue& Value);
 };
