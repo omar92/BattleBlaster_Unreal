@@ -20,6 +20,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void RotateTurret(float DeltaTime, const FVector& LookAtTarget) const;
 
 public:	
 	// Called every frame
@@ -29,6 +30,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
+	
 	UPROPERTY(VisibleAnywhere)
 	class UCapsuleComponent* CapsuleComp;
 	
@@ -38,4 +40,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* TurretMesh;
 	
+	UPROPERTY(EditAnywhere)
+	float TurretTurnRate = 5.f;
 };

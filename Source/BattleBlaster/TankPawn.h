@@ -42,6 +42,8 @@ private:
 	class UInputAction* RotateAction;
 	
 
+	
+
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)

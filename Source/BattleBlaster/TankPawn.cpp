@@ -60,18 +60,8 @@ void ATankPawn::Tick(float DeltaTime)
 		FVector HitLocation = HitResult.ImpactPoint;
 		//draw sphere at hit location
 		DrawDebugSphere(GetWorld(), HitLocation, 25.f, 12, FColor::Red, false, -1.f);
-		
-		// auto location = TurretMesh->GetComponentLocation();
-		// HitLocation.Z = location.Z;
-		// FRotator TargetRotation = (HitLocation - location).Rotation();
-		// TurretMesh->SetWorldRotation(TargetRotation);
-		
-		FVector ToTarget = HitLocation - TurretMesh->GetComponentLocation();
-		FRotator TargetRotation = ToTarget.Rotation();
-		FRotator TurretRotation = TurretMesh->GetComponentRotation();
-		TargetRotation.Pitch = TurretRotation.Pitch;
-		TargetRotation.Roll = TurretRotation.Roll;
-		TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretRotation, TargetRotation, DeltaTime, 5.f));
+
+		RotateTurret(DeltaTime, HitLocation);
 	}
 }
 
