@@ -20,6 +20,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void RotateTurret(float DeltaTime, const FRotator TargetRotation) const;
 	void RotateTurret(float DeltaTime, const FVector& LookAtTarget) const;
 
 public:	

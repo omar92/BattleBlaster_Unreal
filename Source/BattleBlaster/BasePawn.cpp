@@ -27,6 +27,15 @@ void ABasePawn::BeginPlay()
 	
 }
 
+void ABasePawn::RotateTurret(const float DeltaTime, FRotator TargetRotation) const
+{
+	FRotator TurretRotation = TurretMesh->GetComponentRotation();
+	TargetRotation.Pitch = TurretRotation.Pitch;
+	TargetRotation.Roll = TurretRotation.Roll;
+	
+	TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretRotation, TargetRotation, DeltaTime, TurretTurnRate));
+}
+
 void ABasePawn::RotateTurret(const float DeltaTime, const FVector& LookAtTarget) const
 {
 	// auto location = TurretMesh->GetComponentLocation();
@@ -36,10 +45,8 @@ void ABasePawn::RotateTurret(const float DeltaTime, const FVector& LookAtTarget)
 	
 	FVector ToTarget = LookAtTarget - TurretMesh->GetComponentLocation();
 	FRotator TargetRotation = ToTarget.Rotation();
-	FRotator TurretRotation = TurretMesh->GetComponentRotation();
-	TargetRotation.Pitch = TurretRotation.Pitch;
-	TargetRotation.Roll = TurretRotation.Roll;
-	TurretMesh->SetWorldRotation(FMath::RInterpTo(TurretRotation, TargetRotation, DeltaTime, TurretTurnRate));
+	
+	RotateTurret(DeltaTime, TargetRotation);
 }
 
 // Called every frame

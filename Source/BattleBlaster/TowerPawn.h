@@ -25,8 +25,15 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class ATankPawn* Target;
 
+	
+	UPROPERTY(VisibleAnywhere) 
+	FRotator IdleRotation;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	void SetTarget(class ATankPawn* TankRef);
+	
+	UPROPERTY(EditAnywhere)
+	float FireRange = 700.f;
 };
