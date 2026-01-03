@@ -30,6 +30,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	//fire function
+	void Fire() const;
+	
 protected:
 	
 	UPROPERTY(VisibleAnywhere)
@@ -40,6 +43,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* TurretMesh;
+	
+	UPROPERTY(VisibleAnywhere)
+	class USceneComponent* ProjectileSpawnPoint;
 	
 	UPROPERTY(EditAnywhere)
 	float TurretTurnRate = 5.f;

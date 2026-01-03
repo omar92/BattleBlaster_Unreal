@@ -4,8 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "BasePawn.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "TankPawn.generated.h"
 
 /**
@@ -40,22 +38,30 @@ private:
 	class UInputAction* MoveAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* RotateAction;
-	
-
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* FireAction;
+	UPROPERTY(EditAnywhere, Category = "Input")
+	class UInputAction* AccelerateAction;
 	
 
 	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArmComp;
+	class USpringArmComponent* SpringArmComp;
 	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* CameraComp;
+	class UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	APlayerController* PlayerControllerRef;
 	
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 300.f;
 	UPROPERTY(EditAnywhere)
+	float AccelerationRate = 100.f;
+	bool IsAccelerating = false;
+	UPROPERTY(EditAnywhere)
 	float TurnRate = 100.f;
 	
 	void MoveInput(const struct FInputActionValue& Value);
 	void RotateInput(const struct FInputActionValue& Value);
+	void FireInput();
+	void AccelerateInputStarted();
+	void AccelerateInputCompleted();
 };

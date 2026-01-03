@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "TankPawn.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
-#include "InputMappingContext.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "TankPawn.h"
 
 ATankPawn::ATankPawn()
 {
@@ -72,6 +73,9 @@ void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComp
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ATankPawn::MoveInput);
 		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered, this, &ATankPawn::RotateInput);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &ATankPawn::FireInput);
+		EnhancedInputComponent->BindAction(AccelerateAction, ETriggerEvent::Started, this, &ATankPawn::AccelerateInputStarted);
+		EnhancedInputComponent->BindAction(AccelerateAction, ETriggerEvent::Completed, this, &ATankPawn::AccelerateInputCompleted);
 	}
 }
 
@@ -79,7 +83,8 @@ void ATankPawn::MoveInput(const FInputActionValue& Value)
 {
 	const auto InputValue = Value.Get<float>();
 	auto DeltaLocation = FVector::ZeroVector;
-	DeltaLocation.X = InputValue * MoveSpeed * GetWorld()->GetDeltaSeconds();
+	const auto Speed = MoveSpeed + (IsAccelerating ? AccelerationRate : 0.f);
+	DeltaLocation.X = InputValue * Speed * GetWorld()->GetDeltaSeconds();
 	AddActorLocalOffset(DeltaLocation, true);
 }
 
@@ -89,4 +94,20 @@ void ATankPawn::RotateInput(const FInputActionValue& Value)
 	FRotator DeltaRotation = FRotator::ZeroRotator;
 	DeltaRotation.Yaw = InputValue * TurnRate * GetWorld()->GetDeltaSeconds();
 	AddActorLocalRotation(FQuat(DeltaRotation), true);
+}
+
+void ATankPawn::FireInput()
+{
+	Fire();
+}
+
+void ATankPawn::AccelerateInputStarted()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AccelerateInputStarted"));
+	IsAccelerating = true;
+}
+void ATankPawn::AccelerateInputCompleted()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AccelerateInputCompleted"));
+	IsAccelerating = false;
 }
