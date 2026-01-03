@@ -14,4 +14,13 @@ class BATTLEBLASTER_API ABattleBlasterGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+private:
+	
+	class ATankPawn* TankRef = nullptr;
+	int TowerCount = 0;
+	
 };
