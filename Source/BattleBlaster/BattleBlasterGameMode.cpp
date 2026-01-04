@@ -44,29 +44,47 @@ void ABattleBlasterGameMode::SetTowersTarget(TArray<ATowerPawn*> Towers, ATankPa
 
 void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 {
+	IsGameOver = false;
+	IsPlayerWin = false;
+
 	if (Actor == TankRef)
 	{
 		TankRef->HandleDestruction();
-		UE_LOG(LogTemp, Warning, TEXT("Tank destroyed, game over!"));
-		//UGameplayStatics::OpenLevel(this, FName("GameOver"));
-		return;
+		IsGameOver = true;
+		IsPlayerWin = false;
 	}
 
-	if (const auto Tower = Cast<ATowerPawn>(Actor))
+	else if (const auto Tower = Cast<ATowerPawn>(Actor))
 	{
 		//tower is dead
 		Tower->HandleDestruction();
 		TowerCount--;
 		if (TowerCount <= 0)
 		{
-			//all towers are dead, player wins
-			UE_LOG(LogTemp, Warning, TEXT("All towers destroyed, you win!"));
-			//UGameplayStatics::OpenLevel(this, FName("WinScreen"));
-			SetTowersTarget(GetTowers(), nullptr);
+			IsGameOver = true;
+			IsPlayerWin = true;
 		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("ActorDied: Unknown actor type"));
 		return;
 	}
 
-	//log
-	UE_LOG(LogTemp, Error, TEXT("ActorDied: Unknown actor type"));
+	if (!IsGameOver) return;
+	//log game over
+	UE_LOG(LogTemp, Warning, TEXT("Game Over! %s"), IsPlayerWin ? TEXT("Player Wins!") : TEXT("Towers Win!"));
+	
+	//clear towers target
+	SetTowersTarget(GetTowers(), nullptr);
+
+	//create timer 
+	FTimerHandle GameOverTimerHandle;
+	GetWorldTimerManager().SetTimer(GameOverTimerHandle, this, &ABattleBlasterGameMode::OnGameOver, GameOverDelay, false);
+}
+
+void ABattleBlasterGameMode::OnGameOver() const
+{
+	const auto LevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
+	UGameplayStatics::OpenLevel(GetWorld(), *LevelName);
 }

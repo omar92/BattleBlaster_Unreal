@@ -20,6 +20,7 @@ protected:
 
 public:
 	void ActorDied(AActor* Actor);
+	void OnGameOver() const;
 
 protected:
 	TArray<class ATowerPawn*> GetTowers() const;
@@ -28,4 +29,10 @@ protected:
 private:
 	class ATankPawn* TankRef = nullptr;
 	int TowerCount = 0;
+	UPROPERTY(EditAnywhere)
+	float GameOverDelay = 3.f;
+	UPROPERTY(VisibleAnywhere)
+	bool IsGameOver = false;
+	UPROPERTY(VisibleAnywhere)
+	bool IsPlayerWin = false;
 };
