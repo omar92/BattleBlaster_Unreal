@@ -31,7 +31,7 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//fire function
-	void Fire() const;
+	void Fire() ;
 	
 protected:
 	

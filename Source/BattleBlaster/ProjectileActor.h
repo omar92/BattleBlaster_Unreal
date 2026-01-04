@@ -26,5 +26,6 @@ public:
 protected:
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* ProjectileMesh;
-	
+	UPROPERTY(VisibleAnywhere)
+	class UProjectileMovementComponent* ProjectileMoveComp;
 };

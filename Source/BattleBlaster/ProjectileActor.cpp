@@ -2,6 +2,7 @@
 
 
 #include "ProjectileActor.h"
+#include "GameFramework/ProjectileMovementComponent.h"
 
 // Sets default values
 AProjectileActor::AProjectileActor()
@@ -11,6 +12,13 @@ AProjectileActor::AProjectileActor()
 	
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>("ProjectileMesh");
 	SetRootComponent(ProjectileMesh);
+	
+	ProjectileMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComp");
+//	ProjectileMoveComp->UpdatedComponent = ProjectileMesh;
+	ProjectileMoveComp->InitialSpeed = 1000.f;
+	ProjectileMoveComp->MaxSpeed = 1000.f;
+	ProjectileMoveComp->bRotationFollowsVelocity = true;
+	ProjectileMoveComp->bShouldBounce = true;
 	
 }
 
