@@ -49,4 +49,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	float TurretTurnRate = 5.f;
+	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class AProjectileActor> ProjectileActor;
 };

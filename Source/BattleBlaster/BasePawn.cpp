@@ -3,6 +3,8 @@
 
 #include "BasePawn.h"
 
+#include "ProjectileActor.h"
+
 
 // Sets default values
 ABasePawn::ABasePawn()
@@ -68,7 +70,12 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ABasePawn::Fire() const
 {
-	//draw sphere at projectile spawn point
-	DrawDebugSphere(GetWorld(), ProjectileSpawnPoint->GetComponentLocation(), 20.f, 12, FColor::Green, false, 2.f);
+
+	if (!ProjectileSpawnPoint) return;
+	
+	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
+	FRotator SpawnRotation = ProjectileSpawnPoint->GetComponentRotation();
+	
+	GetWorld()->SpawnActor<AProjectileActor>(ProjectileActor, SpawnLocation, SpawnRotation);
 }
 
