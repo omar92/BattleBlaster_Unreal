@@ -60,7 +60,7 @@ void ATankPawn::Tick(float DeltaTime)
 	{
 		FVector HitLocation = HitResult.ImpactPoint;
 		//draw sphere at hit location
-		DrawDebugSphere(GetWorld(), HitLocation, 25.f, 12, FColor::Red, false, -1.f);
+		//DrawDebugSphere(GetWorld(), HitLocation, 25.f, 12, FColor::Red, false, -1.f);
 
 		RotateTurret(DeltaTime, HitLocation);
 	}
@@ -135,4 +135,6 @@ void ATankPawn::SetPlayerEnabledState(const bool bPlayerEnabled)
 	{
 		DisableInput(PlayerControllerRef);
 	}
+	
+	PlayerControllerRef->CurrentMouseCursor = bPlayerEnabled ? EMouseCursor::Crosshairs : EMouseCursor::Default;
 }
