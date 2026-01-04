@@ -23,39 +23,45 @@ protected:
 	void RotateTurret(float DeltaTime, const FRotator TargetRotation) const;
 	void RotateTurret(float DeltaTime, const FVector& LookAtTarget) const;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	//fire function
-	void Fire() ;
-	
+	void Fire();
+
 	//destruction function
 	virtual void HandleDestruction();
-	
+
 protected:
-	
 	UPROPERTY(VisibleAnywhere)
 	class UCapsuleComponent* CapsuleComp;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* BaseMesh;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	class UStaticMeshComponent* TurretMesh;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* ProjectileSpawnPoint;
-	
+
 	UPROPERTY(VisibleAnywhere)
 	class UHealthComponent* HealthComponent;
-	
+
 	UPROPERTY(EditAnywhere)
 	float TurretTurnRate = 5.f;
-	
+
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AProjectileActor> ProjectileActor;
+
+private:
+	UPROPERTY(VisibleAnywhere)
+	bool IsAlive = true;
+
+public:
+	bool GetIsAlive() const;
 };

@@ -84,9 +84,12 @@ void ATankPawn::HandleDestruction()
 	Super::HandleDestruction();
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
+	SetPlayerEnabledState(false);
 	//log game over for player
 	UE_LOG(LogTemp, Warning, TEXT("Tank Destroyed"));
 }
+
+
 
 void ATankPawn::MoveInput(const FInputActionValue& Value)
 {
@@ -114,7 +117,22 @@ void ATankPawn::AccelerateInputStarted()
 {
 	IsAccelerating = true;
 }
+
 void ATankPawn::AccelerateInputCompleted()
 {
 	IsAccelerating = false;
+}
+
+void ATankPawn::SetPlayerEnabledState(const bool bPlayerEnabled)
+{
+	if (!PlayerControllerRef) return;
+
+	if (bPlayerEnabled)
+	{
+		EnableInput(PlayerControllerRef);
+	}
+	else
+	{
+		DisableInput(PlayerControllerRef);
+	}
 }

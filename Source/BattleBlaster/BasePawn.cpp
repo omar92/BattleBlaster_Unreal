@@ -32,6 +32,7 @@ ABasePawn::ABasePawn()
 void ABasePawn::BeginPlay()
 {
 	Super::BeginPlay();
+	IsAlive = true;
 }
 
 void ABasePawn::RotateTurret(const float DeltaTime, FRotator TargetRotation) const
@@ -82,5 +83,11 @@ void ABasePawn::Fire()
 
 void ABasePawn::HandleDestruction()
 {
+	IsAlive = false;
+}
+
+bool ABasePawn::GetIsAlive() const
+{
+	return IsAlive;
 }
 

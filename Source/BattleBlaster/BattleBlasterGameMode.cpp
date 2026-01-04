@@ -49,7 +49,6 @@ void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 		TankRef->HandleDestruction();
 		UE_LOG(LogTemp, Warning, TEXT("Tank destroyed, game over!"));
 		//UGameplayStatics::OpenLevel(this, FName("GameOver"));
-		SetTowersTarget(GetTowers(), nullptr);
 		return;
 	}
 

@@ -39,6 +39,7 @@ void ATowerPawn::CheckFireCondition()
 {
 	if (!Target) return;
 	if (!IsInFireRange()) return;
+	if (!Target->GetIsAlive()) return;
 	Fire();
 }
 

@@ -29,10 +29,10 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
-	
+
+
 	virtual void HandleDestruction() override;
-	
+
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputMappingContext* DefaultMappingContext;
@@ -45,7 +45,7 @@ private:
 	class UInputAction* FireAction;
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputAction* AccelerateAction;
-	
+
 
 	UPROPERTY(VisibleAnywhere)
 	class USpringArmComponent* SpringArmComp;
@@ -53,7 +53,7 @@ private:
 	class UCameraComponent* CameraComp;
 	UPROPERTY(VisibleAnywhere)
 	APlayerController* PlayerControllerRef;
-	
+
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 300.f;
 	UPROPERTY(EditAnywhere)
@@ -61,10 +61,11 @@ private:
 	bool IsAccelerating = false;
 	UPROPERTY(EditAnywhere)
 	float TurnRate = 100.f;
-	
+
 	void MoveInput(const struct FInputActionValue& Value);
 	void RotateInput(const struct FInputActionValue& Value);
 	void FireInput();
 	void AccelerateInputStarted();
 	void AccelerateInputCompleted();
+	void SetPlayerEnabledState(bool bPlayerEnabled);
 };
