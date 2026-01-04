@@ -79,3 +79,4 @@ void ABasePawn::Fire()
 	if (!projectile) return;
 	projectile->SetOwner(this);
 }
+
