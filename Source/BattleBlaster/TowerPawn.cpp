@@ -35,7 +35,7 @@ void ATowerPawn::SetTarget(class ATankPawn* TankRef)
 	Target = TankRef;
 }
 
-void ATowerPawn::CheckFireCondition() const
+void ATowerPawn::CheckFireCondition() 
 {
 	if (!Target) return;
 	if (!IsInFireRange()) return;

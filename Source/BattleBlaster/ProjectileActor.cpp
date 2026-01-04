@@ -22,11 +22,13 @@ AProjectileActor::AProjectileActor()
 	
 }
 
+
+
 // Called when the game starts or when spawned
 void AProjectileActor::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	ProjectileMesh->OnComponentHit.AddDynamic(this, &AProjectileActor::OnHit);
 }
 
 // Called every frame
@@ -36,3 +38,15 @@ void AProjectileActor::Tick(float DeltaTime)
 
 }
 
+void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (!OtherActor )
+	{
+		Destroy();
+		return;
+	}
+	
+	//log hit name  
+	UE_LOG(LogTemp, Warning, TEXT("Hit: %s"), *OtherActor->GetActorNameOrLabel());
+	Destroy();
+}
