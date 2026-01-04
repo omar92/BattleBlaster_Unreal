@@ -31,5 +31,8 @@ protected:
 	float MaxHealth = 100.f;
 	UPROPERTY(VisibleAnywhere)
 	float CurrentHealth = 0.f;
+	
+private:
+	class ABattleBlasterGameMode * BattleBlasterGameMode = nullptr;
 		
 };

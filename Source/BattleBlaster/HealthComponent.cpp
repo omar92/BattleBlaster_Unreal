@@ -3,6 +3,9 @@
 
 #include "HealthComponent.h"
 
+#include "BattleBlasterGameMode.h"
+#include "Kismet/GameplayStatics.h"
+
 // Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
@@ -20,6 +23,21 @@ void UHealthComponent::BeginPlay()
 	Super::BeginPlay();
 	CurrentHealth = MaxHealth;
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnDamageTaken);
+
+	const auto GameMode = UGameplayStatics::GetGameMode(GetWorld()); 
+	if (!GameMode)
+	{
+		//log error
+		UE_LOG(LogTemp, Error, TEXT("GameMode is null in HealthComponent"));
+		return;
+	}
+
+	BattleBlasterGameMode = Cast<ABattleBlasterGameMode>(GameMode);
+	if (!BattleBlasterGameMode)
+	{
+		//log error
+		UE_LOG(LogTemp, Error, TEXT("BattleBlasterGameMode is null in HealthComponent"));
+	}
 }
 
 
@@ -39,12 +57,15 @@ void UHealthComponent::OnDamageTaken(AActor* DamagedActor, float Damage, const c
 	{
 		CurrentHealth = 0.f;
 	}
+
+	if (CurrentHealth > 0.f) return;
 	
-	if (CurrentHealth <= 0.f)
+	
+	//notify game mode of death
+	if (!BattleBlasterGameMode)
 	{
-		if (DamagedActor)
-		{
-			DamagedActor->Destroy();
-		}
+		UE_LOG(LogTemp, Error, TEXT("BattleBlasterGameMode is null in HealthComponent OnDamageTaken"));
+		return;
 	}
+	BattleBlasterGameMode->ActorDied(DamagedActor);
 }
