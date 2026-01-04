@@ -29,9 +29,12 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
 	//fire function
 	void Fire() ;
+	
+	//destruction function
+	virtual void HandleDestruction();
 	
 protected:
 	

@@ -13,17 +13,19 @@ UCLASS()
 class BATTLEBLASTER_API ABattleBlasterGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 public:
 	void ActorDied(AActor* Actor);
 
+protected:
+	TArray<class ATowerPawn*> GetTowers() const;
+	static void SetTowersTarget(TArray<class ATowerPawn*> Towers, class ATankPawn* Target = nullptr);
+
 private:
-	
 	class ATankPawn* TankRef = nullptr;
 	int TowerCount = 0;
-	
 };

@@ -79,6 +79,15 @@ void ATankPawn::SetupPlayerInputComponent(class UInputComponent* PlayerInputComp
 	}
 }
 
+void ATankPawn::HandleDestruction()
+{
+	Super::HandleDestruction();
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	//log game over for player
+	UE_LOG(LogTemp, Warning, TEXT("Tank Destroyed"));
+}
+
 void ATankPawn::MoveInput(const FInputActionValue& Value)
 {
 	const auto InputValue = Value.Get<float>();
@@ -103,11 +112,9 @@ void ATankPawn::FireInput()
 
 void ATankPawn::AccelerateInputStarted()
 {
-	UE_LOG(LogTemp, Warning, TEXT("AccelerateInputStarted"));
 	IsAccelerating = true;
 }
 void ATankPawn::AccelerateInputCompleted()
 {
-	UE_LOG(LogTemp, Warning, TEXT("AccelerateInputCompleted"));
 	IsAccelerating = false;
 }

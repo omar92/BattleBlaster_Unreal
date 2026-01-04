@@ -48,3 +48,11 @@ bool ATowerPawn::IsInFireRange() const
 	const float DistanceToTarget = FVector::Dist(Target->GetActorLocation(), GetActorLocation());
 	return DistanceToTarget <= FireRange;
 }
+
+void ATowerPawn::HandleDestruction()
+{
+	Super::HandleDestruction();
+	Destroy();
+	//log tower destroyed
+	UE_LOG(LogTemp, Warning, TEXT("Tower Destroyed!"));
+}

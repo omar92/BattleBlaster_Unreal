@@ -8,49 +8,55 @@
 #include "TowerPawn.h"
 #include "Kismet/GameplayStatics.h"
 
+
 void ABattleBlasterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
 	TankRef = Cast<ATankPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
+	auto Towers = GetTowers();
+	TowerCount = Towers.Num();
+	SetTowersTarget(Towers, TankRef);
+}
+
+TArray<ATowerPawn*> ABattleBlasterGameMode::GetTowers() const
+{
 	TArray<AActor*> TowerActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATowerPawn::StaticClass(), TowerActors);
-	TowerCount = TowerActors.Num();
-	//assign the tank as target to all towers 
 
+	TArray<ATowerPawn*> Result;
 	for (const auto TowerActor : TowerActors)
 	{
-		auto Tower = Cast<ATowerPawn>(TowerActor);
-		Tower->SetTarget(TankRef);
+		Result.Add(Cast<ATowerPawn>(TowerActor));
 	}
-	// TankRef = Cast<ATankPawn>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	//
-	// //get reference to all towers in the world
-	//
-	// auto TowerItr = TActorIterator<ATowerPawn>(GetWorld());
-	// while (TowerItr)
-	// {
-	// 	TowerArray.Add(*TowerItr);
-	// 	++TowerItr;
-	// }
+	return Result;
+}
+
+void ABattleBlasterGameMode::SetTowersTarget(TArray<ATowerPawn*> Towers, ATankPawn* Target)
+{
+	//assign the tank as target to all towers 
+	for (const auto Tower : Towers)
+	{
+		Tower->SetTarget(Target);
+	}
 }
 
 void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 {
-	if (const auto Tank = Cast<ATankPawn>(Actor))
+	if (Actor == TankRef)
 	{
-		//tank is dead
-		Tank->Destroy();
-		UE_LOG(LogTemp, Warning, TEXT("Tank Destroyed - Game Over!"));
+		TankRef->HandleDestruction();
+		UE_LOG(LogTemp, Warning, TEXT("Tank destroyed, game over!"));
 		//UGameplayStatics::OpenLevel(this, FName("GameOver"));
+		SetTowersTarget(GetTowers(), nullptr);
 		return;
 	}
-	
+
 	if (const auto Tower = Cast<ATowerPawn>(Actor))
 	{
 		//tower is dead
-		Tower->Destroy();
+		Tower->HandleDestruction();
 		TowerCount--;
 		if (TowerCount <= 0)
 		{

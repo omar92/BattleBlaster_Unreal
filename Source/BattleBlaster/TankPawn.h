@@ -30,6 +30,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
+	
+	virtual void HandleDestruction() override;
+	
 private:
 	UPROPERTY(EditAnywhere, Category = "Input")
 	class UInputMappingContext* DefaultMappingContext;
@@ -54,7 +57,7 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MoveSpeed = 300.f;
 	UPROPERTY(EditAnywhere)
-	float AccelerationRate = 100.f;
+	float AccelerationRate = 200.f;
 	bool IsAccelerating = false;
 	UPROPERTY(EditAnywhere)
 	float TurnRate = 100.f;
