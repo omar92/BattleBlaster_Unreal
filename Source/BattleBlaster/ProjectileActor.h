@@ -30,4 +30,8 @@ protected:
 	UStaticMeshComponent* ProjectileMesh;
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMoveComp;
+	
+public:	
+	UPROPERTY(EditAnywhere)
+	float Damage = 25.f;
 };

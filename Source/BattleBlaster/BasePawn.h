@@ -47,6 +47,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	class USceneComponent* ProjectileSpawnPoint;
 	
+	UPROPERTY(VisibleAnywhere)
+	class UHealthComponent* HealthComponent;
+	
 	UPROPERTY(EditAnywhere)
 	float TurretTurnRate = 5.f;
 	

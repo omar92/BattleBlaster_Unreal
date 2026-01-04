@@ -3,6 +3,7 @@
 
 #include "BasePawn.h"
 
+#include "HealthComponent.h"
 #include "ProjectileActor.h"
 
 
@@ -23,6 +24,8 @@ ABasePawn::ABasePawn()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
+	
+	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
 // Called when the game starts or when spawned
