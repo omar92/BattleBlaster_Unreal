@@ -62,6 +62,7 @@ void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 			//all towers are dead, player wins
 			UE_LOG(LogTemp, Warning, TEXT("All towers destroyed, you win!"));
 			//UGameplayStatics::OpenLevel(this, FName("WinScreen"));
+			SetTowersTarget(GetTowers(), nullptr);
 		}
 		return;
 	}
