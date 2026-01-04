@@ -27,6 +27,7 @@ protected:
 	static void SetTowersTarget(TArray<class ATowerPawn*> Towers, class ATankPawn* Target = nullptr);
 
 private:
+	class UBattleBlasterGameInstance * GameInstanceRef = nullptr;
 	class ATankPawn* TankRef = nullptr;
 	int TowerCount = 0;
 	UPROPERTY(EditAnywhere)

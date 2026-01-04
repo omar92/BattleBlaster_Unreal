@@ -4,6 +4,7 @@
 #include "BattleBlasterGameMode.h"
 
 //#include "EngineUtils.h"
+#include "BattleBlasterGameInstance.h"
 #include "TankPawn.h"
 #include "TowerPawn.h"
 #include "Kismet/GameplayStatics.h"
@@ -12,7 +13,7 @@
 void ABattleBlasterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
+	GameInstanceRef = Cast<UBattleBlasterGameInstance>(GetGameInstance());
 	TankRef = Cast<ATankPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 	auto Towers = GetTowers();
@@ -74,7 +75,7 @@ void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 	if (!IsGameOver) return;
 	//log game over
 	UE_LOG(LogTemp, Warning, TEXT("Game Over! %s"), IsPlayerWin ? TEXT("Player Wins!") : TEXT("Towers Win!"));
-	
+
 	//clear towers target
 	SetTowersTarget(GetTowers(), nullptr);
 
@@ -85,6 +86,32 @@ void ABattleBlasterGameMode::ActorDied(AActor* Actor)
 
 void ABattleBlasterGameMode::OnGameOver() const
 {
-	const auto LevelName = UGameplayStatics::GetCurrentLevelName(GetWorld());
-	UGameplayStatics::OpenLevel(GetWorld(), *LevelName);
+	if (!GameInstanceRef)
+	{
+		//log error
+		UE_LOG(LogTemp, Error, TEXT("GameInstanceRef is null in OnGameOver"));
+		return;
+	}
+
+	if (IsPlayerWin)
+	{
+		if (GameInstanceRef->IsLastLevel())
+		{
+			//log player completed all levels
+			UE_LOG(LogTemp, Warning, TEXT("Player completed all levels! Restarting game."));
+			GameInstanceRef->RestartGame();
+		}
+		else
+		{
+			//log player won level and loading next level
+			UE_LOG(LogTemp, Warning, TEXT("Loading next level..."));
+			GameInstanceRef->LoadNextLevel();
+		}
+	}
+	else
+	{
+		//log player lost and restarting current level
+		UE_LOG(LogTemp, Warning, TEXT("Restarting current level..."));
+		GameInstanceRef->RestartCurrentLevel();
+	}
 }

@@ -15,9 +15,24 @@ class BATTLEBLASTER_API UBattleBlasterGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 public:
+	
+	void LoadNextLevel();
+	void RestartCurrentLevel();
+	void RestartGame();
+	int GetCurrentLevel() const;
+	bool IsLastLevel() const ;
+private:
+	void ChangeLevel(int32 LevelNumber) ;
+	
 	UPROPERTY(EditAnywhere)
 	int32 LastLevel = 3;
 	
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentLevel = 1;
+	
+	//levels refrences array 
+	UPROPERTY(EditAnywhere) 
+	TArray<FName> Levels;
+	
+	
 };
