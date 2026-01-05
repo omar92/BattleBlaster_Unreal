@@ -24,7 +24,7 @@ void UHealthComponent::BeginPlay()
 	CurrentHealth = MaxHealth;
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComponent::OnDamageTaken);
 
-	const auto GameMode = UGameplayStatics::GetGameMode(GetWorld()); 
+	const auto GameMode = UGameplayStatics::GetGameMode(GetWorld());
 	if (!GameMode)
 	{
 		//log error
@@ -52,15 +52,16 @@ void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UHealthComponent::OnDamageTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
 {
+	if (Damage <= 0.f) return;
 	CurrentHealth -= Damage;
 	if (CurrentHealth <= 0.f)
 	{
 		CurrentHealth = 0.f;
 	}
-
+	BattleBlasterGameMode->PlayerHealthCHanged();
 	if (CurrentHealth > 0.f) return;
-	
-	
+
+
 	//notify game mode of death
 	if (!BattleBlasterGameMode)
 	{
@@ -68,4 +69,14 @@ void UHealthComponent::OnDamageTaken(AActor* DamagedActor, float Damage, const c
 		return;
 	}
 	BattleBlasterGameMode->ActorDied(DamagedActor);
+}
+
+float UHealthComponent::GetCurrentHealth() const
+{
+	return CurrentHealth;
+}
+
+float UHealthComponent::GetMaxHealth() const
+{
+	return MaxHealth;
 }

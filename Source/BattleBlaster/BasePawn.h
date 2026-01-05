@@ -35,6 +35,9 @@ public:
 
 	//destruction function
 	virtual void HandleDestruction();
+	
+	float GetHealthPercent() const;
+
 
 protected:
 	UPROPERTY(VisibleAnywhere)

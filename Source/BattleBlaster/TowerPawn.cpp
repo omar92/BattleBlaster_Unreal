@@ -6,6 +6,8 @@
 
 ATowerPawn::ATowerPawn()
 {
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ATowerPawn::BeginPlay()
@@ -35,7 +37,7 @@ void ATowerPawn::SetTarget(class ATankPawn* TankRef)
 	Target = TankRef;
 }
 
-void ATowerPawn::CheckFireCondition() 
+void ATowerPawn::CheckFireCondition()
 {
 	if (!Target) return;
 	if (!IsInFireRange()) return;

@@ -19,6 +19,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
+	// Called every frame
+	virtual void PlayerHealthCHanged();
 	void ActorDied(AActor* Actor);
 	void OnGameOver() const;
 
@@ -27,8 +29,9 @@ protected:
 	static void SetTowersTarget(TArray<class ATowerPawn*> Towers, class ATankPawn* Target = nullptr);
 
 private:
-	class UBattleBlasterGameInstance * GameInstanceRef = nullptr;
+	class UBattleBlasterGameInstance* GameInstanceRef = nullptr;
 	class ATankPawn* TankRef = nullptr;
+	class UScreenMessage* ScreenMessage = nullptr;
 	int TowerCount = 0;
 	UPROPERTY(EditAnywhere)
 	float GameOverDelay = 3.f;
@@ -36,4 +39,7 @@ private:
 	bool IsGameOver = false;
 	UPROPERTY(VisibleAnywhere)
 	bool IsPlayerWin = false;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UScreenMessage> ScreenMessageWidget;
 };

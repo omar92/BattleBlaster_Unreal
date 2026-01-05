@@ -34,7 +34,7 @@ public:
 	void SetTarget(class ATankPawn* TankRef);
 	void CheckFireCondition() ;
 	bool IsInFireRange() const;
-	
+
 	virtual void HandleDestruction() override;
 
 	UPROPERTY(EditAnywhere)

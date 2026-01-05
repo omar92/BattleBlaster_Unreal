@@ -30,9 +30,4 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentLevel = 1;
 	
-	//levels refrences array 
-	UPROPERTY(EditAnywhere) 
-	TArray<FName> Levels;
-	
-	
 };

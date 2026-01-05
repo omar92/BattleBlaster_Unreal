@@ -86,6 +86,11 @@ void ABasePawn::HandleDestruction()
 	IsAlive = false;
 }
 
+float ABasePawn::GetHealthPercent() const
+{
+	return HealthComponent ? HealthComponent->GetCurrentHealth() / HealthComponent->GetMaxHealth() : 0.f;
+}
+
 bool ABasePawn::GetIsAlive() const
 {
 	return IsAlive;

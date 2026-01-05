@@ -5,20 +5,38 @@
 
 //#include "EngineUtils.h"
 #include "BattleBlasterGameInstance.h"
+#include "ScreenMessage.h"
 #include "TankPawn.h"
 #include "TowerPawn.h"
+#include "Blueprint/UserWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 
 void ABattleBlasterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
 	GameInstanceRef = Cast<UBattleBlasterGameInstance>(GetGameInstance());
 	TankRef = Cast<ATankPawn>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 
 	auto Towers = GetTowers();
 	TowerCount = Towers.Num();
 	SetTowersTarget(Towers, TankRef);
+
+	const auto PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	if (const auto ScreenMessageWid = CreateWidget<UScreenMessage>(PlayerController, this->ScreenMessageWidget))
+	{
+		ScreenMessage = ScreenMessageWid;
+		ScreenMessage->AddToViewport();
+		ScreenMessage->SetScreenMessageText(FString::Printf(TEXT("Level %d"), GameInstanceRef ? GameInstanceRef->GetCurrentLevel() : 1));
+
+		ScreenMessage->SetHealthProgressBarPercent(1.f);
+	}
+}
+
+void ABattleBlasterGameMode::PlayerHealthCHanged()
+{
+	ScreenMessage->SetHealthProgressBarPercent(TankRef ? TankRef->GetHealthPercent() : 0.f);
 }
 
 TArray<ATowerPawn*> ABattleBlasterGameMode::GetTowers() const
