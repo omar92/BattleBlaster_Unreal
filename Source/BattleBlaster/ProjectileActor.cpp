@@ -3,6 +3,8 @@
 
 #include "ProjectileActor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -20,6 +22,9 @@ AProjectileActor::AProjectileActor()
 	ProjectileMoveComp->MaxSpeed = 1000.f;
 	ProjectileMoveComp->bRotationFollowsVelocity = true;
 	ProjectileMoveComp->bShouldBounce = true;
+	
+	TrailEffect = CreateDefaultSubobject<UNiagaraComponent>("TrailEffect");
+	TrailEffect->SetupAttachment(ProjectileMesh);
 	
 }
 
@@ -41,6 +46,11 @@ void AProjectileActor::Tick(float DeltaTime)
 
 void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	
+	if (HitEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitEffect, Hit.ImpactPoint, GetActorRotation());
+	}
 	
 	auto MyOwner = GetOwner(); 
 	if (!MyOwner )

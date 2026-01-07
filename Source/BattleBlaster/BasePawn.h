@@ -35,9 +35,8 @@ public:
 
 	//destruction function
 	virtual void HandleDestruction();
-	
-	float GetHealthPercent() const;
 
+	float GetHealthPercent() const;
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -60,6 +59,17 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AProjectileActor> ProjectileActor;
+
+	
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* ExplodeEffect;
+	
+	//sound
+	UPROPERTY(EditAnywhere)
+	class USoundBase* FireSound;
+	
+	UPROPERTY(EditAnywhere)
+	class USoundBase* DeathSound;
 
 private:
 	UPROPERTY(VisibleAnywhere)

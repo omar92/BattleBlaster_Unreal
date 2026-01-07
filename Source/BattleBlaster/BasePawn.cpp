@@ -4,7 +4,10 @@
 #include "BasePawn.h"
 
 #include "HealthComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraFunctionLibrary.h"
 #include "ProjectileActor.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -24,7 +27,7 @@ ABasePawn::ABasePawn()
 
 	ProjectileSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProjectileSpawnPoint"));
 	ProjectileSpawnPoint->SetupAttachment(TurretMesh);
-	
+
 	HealthComponent = CreateDefaultSubobject<UHealthComponent>(TEXT("HealthComponent"));
 }
 
@@ -69,21 +72,36 @@ void ABasePawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ABasePawn::Fire() 
+void ABasePawn::Fire()
 {
 	if (!ProjectileSpawnPoint) return;
 
 	FVector SpawnLocation = ProjectileSpawnPoint->GetComponentLocation();
 	FRotator SpawnRotation = ProjectileSpawnPoint->GetComponentRotation();
 
-	AProjectileActor*  projectile = GetWorld()->SpawnActor<AProjectileActor>(ProjectileActor, SpawnLocation, SpawnRotation);
+	AProjectileActor* projectile = GetWorld()->SpawnActor<AProjectileActor>(ProjectileActor, SpawnLocation, SpawnRotation);
 	if (!projectile) return;
 	projectile->SetOwner(this);
+
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, projectile->GetActorLocation());
+	}
 }
 
 void ABasePawn::HandleDestruction()
 {
 	IsAlive = false;
+
+	if (DeathSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, DeathSound, GetActorLocation());
+	}
+	
+	if (ExplodeEffect)
+	{
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ExplodeEffect, GetActorLocation(), GetActorRotation());
+	}
 }
 
 float ABasePawn::GetHealthPercent() const
@@ -95,4 +113,3 @@ bool ABasePawn::GetIsAlive() const
 {
 	return IsAlive;
 }
-

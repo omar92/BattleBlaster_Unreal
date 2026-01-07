@@ -30,6 +30,13 @@ protected:
 	UStaticMeshComponent* ProjectileMesh;
 	UPROPERTY(VisibleAnywhere)
 	class UProjectileMovementComponent* ProjectileMoveComp;
+	UPROPERTY(VisibleAnywhere)
+	class UNiagaraComponent* TrailEffect;
+	
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* HitEffect;
+	
+	
 	
 public:	
 	UPROPERTY(EditAnywhere)
