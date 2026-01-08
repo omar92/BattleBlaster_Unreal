@@ -36,7 +36,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UNiagaraSystem* HitEffect;
 	
-	
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class  UCameraShakeBase> HitCameraShake;
 	
 public:	
 	UPROPERTY(EditAnywhere)

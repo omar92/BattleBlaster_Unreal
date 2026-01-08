@@ -10,24 +10,22 @@
 // Sets default values
 AProjectileActor::AProjectileActor()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	
+
 	ProjectileMesh = CreateDefaultSubobject<UStaticMeshComponent>("ProjectileMesh");
 	SetRootComponent(ProjectileMesh);
-	
+
 	ProjectileMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComp");
-//	ProjectileMoveComp->UpdatedComponent = ProjectileMesh;
+	//	ProjectileMoveComp->UpdatedComponent = ProjectileMesh;
 	ProjectileMoveComp->InitialSpeed = 1000.f;
 	ProjectileMoveComp->MaxSpeed = 1000.f;
 	ProjectileMoveComp->bRotationFollowsVelocity = true;
 	ProjectileMoveComp->bShouldBounce = true;
-	
+
 	TrailEffect = CreateDefaultSubobject<UNiagaraComponent>("TrailEffect");
 	TrailEffect->SetupAttachment(ProjectileMesh);
-	
 }
-
 
 
 // Called when the game starts or when spawned
@@ -41,39 +39,48 @@ void AProjectileActor::BeginPlay()
 void AProjectileActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 void AProjectileActor::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	
 	if (HitEffect)
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), HitEffect, Hit.ImpactPoint, GetActorRotation());
 	}
-	
-	auto MyOwner = GetOwner(); 
-	if (!MyOwner )
+
+	auto MyOwner = GetOwner();
+	if (!MyOwner)
 	{
 		Destroy();
 		UE_LOG(LogTemp, Error, TEXT("Projectile has no owner"));
 		return;
 	}
-	if (!OtherActor )
+	if (!OtherActor)
 	{
 		Destroy();
 		UE_LOG(LogTemp, Error, TEXT("OtherActor is null"));
 		return;
 	}
-	
+
 	if (OtherActor == this || OtherActor == MyOwner) //ignore self hit or owner hit
 	{
 		Destroy();
 		return;
 	}
-	
+
 	//ApplyDamage 
 	UGameplayStatics::ApplyDamage(OtherActor, Damage, MyOwner->GetInstigatorController(), this, UDamageType::StaticClass());
+
+	if (HitCameraShake)
+	{
+	auto player = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+		if (player)
+		{
+			player->ClientStartCameraShake(HitCameraShake);
+		}
+	}
+	
+
 
 	Destroy();
 }
